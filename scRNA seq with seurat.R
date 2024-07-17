@@ -7,10 +7,10 @@ library(anndata)
 
 #loading files and saving files as csv
 
-data<- read_h5ad("E:/bioinformatics files/scRNA seq/scder.h5ad")
+data<- read_h5ad(":/scder.h5ad")
 dat = as.matrix(data$X) %>% as_tibble() %>% 
-  write_csv(file = "E:/bioinformatics files/scRNA seq/sc with R/scCountMat.csv.gz")
-counts   <- read.csv("E:/bioinformatics files/scRNA seq/sc with R/scCountMat.csv.gz",
+  write_csv(file = ".:/scCountMat.csv.gz")
+counts   <- read.csv(".:/scCountMat.csv.gz",
                      header = TRUE,
                      check.names=FALSE)
 meta.df = data$obs
@@ -18,9 +18,9 @@ meta.df = data$obs
 meta.df <- meta.df %>% rownames_to_column(var = "cellName")
 
 write_csv(meta.df,
-	file = "E:/bioinformatics files/scRNA seq/sc with R/scCountMetadata.csv.gz")
+	file = ".:/scCountMetadata.csv.gz")
 
-meta     <- read.csv("E:/bioinformatics files/scRNA seq/sc with R/scCountMetadata.csv.gz")
+meta     <- read.csv(".:/scCountMetadata.csv.gz")
 rownames(meta) = meta$cellName
 rownames(counts) = meta$cellName
 
@@ -101,6 +101,7 @@ p2 <- DimPlot(scde, reduction = "umap", label = TRUE, repel = TRUE, group.by = '
 p3 <- DimPlot(scde, reduction = "umap", label = TRUE, repel = TRUE, group.by = 'cluster.id')
 p1 | p2 | p3
 
+# Differential Expression 
 # finding highly expressed genes in each cluster with min of 25% genes expressed in each cluster
 # and min logfold change of 0.25
 markerTable <- FindAllMarkers(scde, min.pct = 0.25, logfc.threshold = 0.25, test.use = "wilcox")
